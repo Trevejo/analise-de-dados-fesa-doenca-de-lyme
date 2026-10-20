@@ -29,23 +29,22 @@ class NumberedCanvas(canvas.Canvas):
 
     def draw_page_decorations(self, page_count):
         self.saveState()
+        
+        # Header em cada página: apenas "Faculdade Engenheiro Salvador Arena"
+        self.setFont("Helvetica-Bold", 8.5)
+        self.setFillColor(colors.HexColor("#475569"))
+        self.drawString(45, 812, "Faculdade Engenheiro Salvador Arena")
+        self.setStrokeColor(colors.HexColor("#CBD5E1"))
+        self.setLineWidth(0.6)
+        self.line(45, 804, 550, 804)
+
+        # Footer
         self.setFont("Helvetica", 8)
         self.setFillColor(colors.HexColor("#64748B"))
-        
-        # We do not draw headers/footers on page 1 (cover / front page)
-        if self._pageNumber > 1:
-            # Header
-            self.drawString(50, 800, "FESA - Faculdade Engenheiro Salvador Arena • Engenharia de Computação • Análise de Dados")
-            self.drawRightString(545, 800, "Entrega 01: Doença de Lyme (Eritema Migratório)")
-            self.setStrokeColor(colors.HexColor("#CBD5E1"))
-            self.setLineWidth(0.6)
-            self.line(50, 794, 545, 794)
-
-            # Footer
-            self.line(50, 45, 545, 45)
-            self.drawString(50, 33, "Relatório Técnico e Plano do Problema de IA em Saúde")
-            page_text = f"Página {self._pageNumber} de {page_count}"
-            self.drawRightString(545, 33, page_text)
+        self.line(45, 46, 550, 46)
+        self.drawString(45, 33, "Engenharia de Computação • Análise de Dados")
+        page_text = f"Página {self._pageNumber} de {page_count}"
+        self.drawRightString(550, 33, page_text)
             
         self.restoreState()
 
@@ -58,8 +57,8 @@ def create_report():
         pagesize=A4,
         leftMargin=45,
         rightMargin=45,
-        topMargin=54,
-        bottomMargin=54
+        topMargin=65,
+        bottomMargin=60
     )
 
     styles = getSampleStyleSheet()
