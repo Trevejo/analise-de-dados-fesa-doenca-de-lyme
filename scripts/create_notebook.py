@@ -14,7 +14,7 @@ def create_notebook():
                     "**Curso:** Engenharia de Computação  \n",
                     "**Disciplina:** Análise de Dados (N1 - 2º Bimestre)  \n",
                     "**Dataset:** Lyme Disease Rashes (Full Stratified - Kaggle)  \n",
-                    "**Autor:** Murilo Trevejo  \n",
+                    "**Autores (Dupla):** Fábio Gomes Celestino (RA: 081220016) e Murilo Trevejo Santos (RA: 081220025)  \n",
                     "**Data de Entrega:** 19/10/2026\n"
                 ]
             },

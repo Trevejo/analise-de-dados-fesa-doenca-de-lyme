@@ -4,7 +4,9 @@
 **Curso:** Engenharia de Computação  
 **Disciplina:** Análise de Dados  
 **Avaliação:** N1 - 2º Bimestre • **Entrega 01: Relatório de Análise de Dados e Plano do Problema**  
-**Autor:** Murilo Trevejo  
+**Autores (Dupla):**  
+- Fábio Gomes Celestino — RA: 081220016  
+- Murilo Trevejo Santos — RA: 081220025  
 **Data de Entrega:** 19/10/2026  
 **Relatório Técnico Oficial:** [`reports/Relatorio_Entrega_01_Doenca_de_Lyme.pdf`](reports/Relatorio_Entrega_01_Doenca_de_Lyme.pdf)
 

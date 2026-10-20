@@ -209,8 +209,8 @@ def create_report():
             Paragraph("<b>Data da Entrega:</b> 19/10/2026", meta_style)
         ],
         [
-            Paragraph("<b>Doença Selecionada:</b> Doença de Lyme (<i>Borrelia burgdorferi</i>)", meta_style),
-            Paragraph("<b>Dataset:</b> Lyme Disease Rashes (5.059 imagens RGB)", meta_style)
+            Paragraph("<b>Integrantes (Dupla):</b><br/>• Fábio Gomes Celestino — RA: 081220016<br/>• Murilo Trevejo Santos — RA: 081220025", meta_style),
+            Paragraph("<b>Doença Selecionada:</b> Doença de Lyme (<i>Borrelia burgdorferi</i>)<br/><b>Dataset:</b> Lyme Disease Rashes (5.059 imagens RGB)", meta_style)
         ]
     ]
     t_meta = Table(meta_data, colWidths=[270, 235])
