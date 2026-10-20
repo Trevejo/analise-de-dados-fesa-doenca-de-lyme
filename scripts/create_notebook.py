@@ -1,0 +1,282 @@
+import json
+import os
+
+def create_notebook():
+    nb = {
+        "cells": [
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "# Entrega 01: Relatório de Análise de Dados e Plano do Problema\n",
+                    "## Projeto: Inteligência Artificial e Visão Computacional para Diagnóstico Precoce da Doença de Lyme\n",
+                    "**Instituição:** Centro Universitário FEI / FESA  \n",
+                    "**Disciplina:** Ciência e Análise de Dados  \n",
+                    "**Dataset:** Lyme Disease Rashes (Full Stratified - Kaggle)  \n",
+                    "**Autor:** Murilo Trevejo  \n",
+                    "**Data:** Outubro de 2026\n",
+                    "\n",
+                    "---\n",
+                    "### Sumário do Estudo\n",
+                    "Este notebook executa a pipeline completa da **Análise Exploratória de Dados Preliminar (EDA)**, extração de metadados espectrais e geométricos, e diagnóstico de integridade da base fotográfica de lesões de **Doença de Lyme (Eritema Migratório)** e 12 diagnósticos diferenciais dermatológicos."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "import os\n",
+                    "import re\n",
+                    "import numpy as np\n",
+                    "import pandas as pd\n",
+                    "import matplotlib.pyplot as plt\n",
+                    "import seaborn as sns\n",
+                    "from PIL import Image\n",
+                    "\n",
+                    "# Configurações estéticas\n",
+                    "sns.set_theme(style='whitegrid', palette='muted')\n",
+                    "plt.rcParams['figure.figsize'] = (10, 5)\n",
+                    "plt.rcParams['font.size'] = 10\n",
+                    "\n",
+                    "print('Bibliotecas importadas com sucesso!')"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 1. Carregamento dos Metadados Estruturados\n",
+                    "Carregamos a base de dados tabulares estruturada gerada a partir das 5.059 imagens dermatológicas."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "csv_path = '../data/metadata_lyme_rashes.csv'\n",
+                    "df = pd.read_csv(csv_path)\n",
+                    "print(f'Total de instâncias fotográficas analisadas: {len(df):,}')\n",
+                    "df.head()"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 2. Diagnóstico de Dados Faltantes e Integridade\n",
+                    "Verificação quantitativa de valores nulos e validação de cabeçalhos de arquivos."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "missing = df.isnull().sum()\n",
+                    "print('Contagem de valores ausentes por variável:')\n",
+                    "print(missing)\n",
+                    "print(f'\\nImagens corrompidas no disco: {df[\"corrupted\"].sum()} (0.0%)')"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 3. Análise de Desbalanceamento de Classes e Partições\n",
+                    "Investigação da distribuição entre casos Positivos (Eritema de Lyme) e Negativos (Outras lesões)."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "class_counts = df['binary_class'].value_counts()\n",
+                    "print('Distribuição Absoluta e Percentual:')\n",
+                    "for cls, count in class_counts.items():\n",
+                    "    print(f' - {cls}: {count} imagens ({count/len(df)*100:.2f}%)')\n",
+                    "\n",
+                    "ratio = class_counts['Negative'] / class_counts['Positive']\n",
+                    "print(f'\\nRazão de Desbalanceamento (Negativo : Positivo): {ratio:.2f} : 1')\n",
+                    "\n",
+                    "print('\\nDistribuição por Split Oficial (Treino / Validação / Teste):')\n",
+                    "display(pd.crosstab(df['split'], df['binary_class'], margins=True))"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 4. Detalhamento das 15 Condições Clínicas\n",
+                    "Mapeamento taxonômico das variantes de Lyme e dos 12 diagnósticos diferenciais."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "fig, ax = plt.subplots(figsize=(11, 6))\n",
+                    "cond_counts = df['condition'].value_counts()\n",
+                    "colors = ['#DC2626' if c in ['Erythema Migrans', 'bullseye rash', 'EM rash'] else '#3B82F6' for c in cond_counts.index]\n",
+                    "sns.barplot(x=cond_counts.values, y=cond_counts.index, palette=colors, ax=ax)\n",
+                    "ax.set_title('Distribuição das 15 Condições Dermatológicas no Dataset', fontsize=13, weight='bold')\n",
+                    "ax.set_xlabel('Quantidade de Imagens')\n",
+                    "ax.set_ylabel('Patologia / Condição Clínica')\n",
+                    "for i, v in enumerate(cond_counts.values):\n",
+                    "    ax.text(v + 5, i, str(v), va='center', fontweight='bold', fontsize=9)\n",
+                    "plt.tight_layout()\n",
+                    "plt.show()"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 5. Dimensões Espaciais e Resolução (Outliers Geométricos)"
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "fig, axes = plt.subplots(1, 2, figsize=(14, 5))\n",
+                    "sns.scatterplot(data=df, x='width', y='height', hue='binary_class', alpha=0.5,\n",
+                    "                palette={'Negative': '#6B7280', 'Positive': '#DC2626'}, ax=axes[0])\n",
+                    "axes[0].set_title('Largura vs Altura (pixels)', fontsize=12, weight='bold')\n",
+                    "axes[0].set_xlabel('Largura (px)')\n",
+                    "axes[0].set_ylabel('Altura (px)')\n",
+                    "\n",
+                    "sns.histplot(data=df, x='aspect_ratio', hue='binary_class', bins=35, kde=True,\n",
+                    "             palette={'Negative': '#6B7280', 'Positive': '#DC2626'}, ax=axes[1])\n",
+                    "axes[1].set_title('Distribuição do Aspect Ratio (Largura / Altura)', fontsize=12, weight='bold')\n",
+                    "axes[1].axvline(1.0, color='red', linestyle='--', label='1:1 (Quadrada)')\n",
+                    "axes[1].legend()\n",
+                    "plt.tight_layout()\n",
+                    "plt.show()"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 6. Análise Espectral de Cores e Índice de Eritema (R - G)\n",
+                    "Avaliação do poder discriminatório da hiperemia cutânea isolada."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "fig, axes = plt.subplots(1, 2, figsize=(14, 5))\n",
+                    "\n",
+                    "rgb_means = pd.DataFrame({\n",
+                    "    'Canal R': [df[df['binary_class']=='Positive']['mean_r'].mean(), df[df['binary_class']=='Negative']['mean_r'].mean()],\n",
+                    "    'Canal G': [df[df['binary_class']=='Positive']['mean_g'].mean(), df[df['binary_class']=='Negative']['mean_g'].mean()],\n",
+                    "    'Canal B': [df[df['binary_class']=='Positive']['mean_b'].mean(), df[df['binary_class']=='Negative']['mean_b'].mean()],\n",
+                    "}, index=['Positivo (Lyme)', 'Negativo (Outros)'])\n",
+                    "\n",
+                    "rgb_means.plot(kind='bar', ax=axes[0], color=['#EF4444', '#10B981', '#3B82F6'], width=0.6)\n",
+                    "axes[0].set_title('Intensidade Média por Canal de Cor (RGB)', fontsize=12, weight='bold')\n",
+                    "axes[0].set_ylabel('Intensidade (0-255)')\n",
+                    "axes[0].set_xticklabels(axes[0].get_xticklabels(), rotation=0)\n",
+                    "\n",
+                    "sns.kdeplot(data=df, x='erythema_index', hue='binary_class', fill=True, common_norm=False,\n",
+                    "            palette={'Negative': '#6B7280', 'Positive': '#DC2626'}, ax=axes[1], alpha=0.4)\n",
+                    "axes[1].set_title('Densidade do Índice de Eritema Cutâneo (R - G)', fontsize=12, weight='bold')\n",
+                    "axes[1].set_xlabel('Índice de Eritema (R - G)')\n",
+                    "plt.tight_layout()\n",
+                    "plt.show()"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 7. Detecção de Outliers e Ruído Óptico (Brilho e Contraste)\n",
+                    "Identificação de amostras com subexposição, superexposição (flash especular) e desfoque."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "q_b_low, q_b_high = df['brightness'].quantile(0.01), df['brightness'].quantile(0.99)\n",
+                    "q_c_low, q_c_high = df['contrast'].quantile(0.01), df['contrast'].quantile(0.99)\n",
+                    "\n",
+                    "print(f'Limiares de Brilho (Percentil 1% e 99%): {q_b_low:.2f} e {q_b_high:.2f}')\n",
+                    "print(f'Limiares de Contraste (Percentil 1% e 99%): {q_c_low:.2f} e {q_c_high:.2f}')\n",
+                    "\n",
+                    "fig, ax = plt.subplots(figsize=(10, 5.5))\n",
+                    "sns.scatterplot(data=df, x='brightness', y='contrast', hue='binary_class', alpha=0.5,\n",
+                    "                palette={'Negative': '#6B7280', 'Positive': '#DC2626'}, ax=ax)\n",
+                    "ax.axvline(q_b_low, color='red', linestyle='--', label=f'Outliers Brilho ({q_b_low:.1f}, {q_b_high:.1f})')\n",
+                    "ax.axvline(q_b_high, color='red', linestyle='--')\n",
+                    "ax.axhline(q_c_low, color='orange', linestyle='--', label=f'Outliers Contraste ({q_c_low:.1f}, {q_c_high:.1f})')\n",
+                    "ax.axhline(q_c_high, color='orange', linestyle='--')\n",
+                    "ax.set_title('Espaço de Brilho vs Contraste com Fronteiras de Outliers', fontsize=13, weight='bold')\n",
+                    "ax.legend(loc='lower left')\n",
+                    "plt.tight_layout()\n",
+                    "plt.show()"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 8. As 4 Perguntas-Chave do Projeto (Problema de Ciência de Dados)\n",
+                    "\n",
+                    "### 1. Pergunta de Agrupamento (Clustering Não Supervisionado)\n",
+                    "> *\"Existem subgrupos, padrões morfológicos latentes ou fenótipos visuais não rotulados entre as lesões de eritema de pacientes com Lyme que permitam categorizar diferentes perfis de gravidade ou tempo de evolução clínica?\"*\n",
+                    "\n",
+                    "### 2. Pergunta de Classificação (Aprendizado Supervisionado)\n",
+                    "> *\"É possível construir um modelo preditivo baseado em redes neurais convolucionais capaz de diagnosticar precocemente o eritema da Doença de Lyme e diferenciá-lo de outras 12 patologias dermatológicas similares em meio a imagens ruidosas?\"*\n",
+                    "\n",
+                    "### 3. Pergunta Preditiva (Regressão / Modelagem Temporal)\n",
+                    "> *\"Como modelar e prever a dinâmica geométrica de expansão temporal da lesão (taxa de crescimento diametral em cm/dia) e estimar a probabilidade contínua de disseminação sistêmica ou transição para fases crônicas?\"*\n",
+                    "\n",
+                    "### 4. Pergunta de Suporte à Decisão (Aplicação Prescritiva / CDSS)\n",
+                    "> *\"Como as predições probabilísticas calibradas e mapas de explicabilidade visual (Grad-CAM) podem ser integrados em um Sistema de Suporte à Decisão Clínica (CDSS) para auxiliar na recomendação de condutas terapêuticas precoces e otimização de tratamento?\"*\n",
+                    "\n",
+                    "--- \n",
+                    "**Relatório Técnico Oficial Gerado:** `reports/Relatorio_Entrega_01_Doenca_de_Lyme.pdf`"
+                ]
+            }
+        ],
+        "metadata": {
+            "kernelspec": {
+                "display_name": "Python 3",
+                "language": "python",
+                "name": "python3"
+            },
+            "language_info": {
+                "name": "python",
+                "version": "3.14.4"
+            }
+        },
+        "nbformat": 4,
+        "nbformat_minor": 4
+    }
+
+    nb_dir = "/home/usuario/side-projects/analise-de-dados-fesa-doenca-de-lyme/notebooks"
+    os.makedirs(nb_dir, exist_ok=True)
+    nb_path = os.path.join(nb_dir, "01_analise_exploratoria_lyme.ipynb")
+    with open(nb_path, "w", encoding="utf-8") as f:
+        json.dump(nb, f, indent=2, ensure_ascii=False)
+    print("Notebook created successfully:", nb_path)
+
+if __name__ == "__main__":
+    create_notebook()
