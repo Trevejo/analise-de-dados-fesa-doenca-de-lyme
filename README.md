@@ -1,7 +1,8 @@
-# Projeto de Ciência de Dados: Diagnóstico Precoce da Doença de Lyme via Visão Computacional
+# Projeto: Diagnóstico Precoce da Doença de Lyme via Visão Computacional
 
-**Instituição:** Centro Universitário FEI / Fundação Educacional Inaciana (FESA)  
-**Disciplina:** Ciência e Análise de Dados  
+**Instituição:** FESA - Faculdade Engenheiro Salvador Arena  
+**Curso:** Engenharia de Computação  
+**Disciplina:** Análise de Dados  
 **Avaliação:** N1 - 2º Bimestre • **Entrega 01: Relatório de Análise de Dados e Plano do Problema**  
 **Autor:** Murilo Trevejo  
 **Data:** Outubro de 2026  
@@ -11,7 +12,7 @@
 
 ## 📌 Visão Geral do Projeto
 
-Este repositório contém os artefatos de pesquisa, dados, código analítico e relatório técnico da **Entrega 01** do projeto semestral de Ciência de Dados aplicada à Saúde. O trabalho foca no diagnóstico precoce da **Doença de Lyme** (*Borrelia burgdorferi*) através de técnicas de Visão Computacional e Aprendizado de Máquina aplicadas ao reconhecimento do **Eritema Migratório (Erythema Migrans - EM)** e sua diferenciação contra 12 diagnósticos diferenciais dermatológicos.
+Este repositório contém os artefatos de pesquisa, dados, código analítico e relatório técnico da **Entrega 01** da disciplina de **Análise de Dados** no curso de **Engenharia de Computação**. O trabalho foca no diagnóstico precoce da **Doença de Lyme** (*Borrelia burgdorferi*) através de técnicas de Visão Computacional e Aprendizado de Máquina aplicadas ao reconhecimento do **Eritema Migratório (Erythema Migrans - EM)** e sua diferenciação contra 12 diagnósticos diferenciais dermatológicos.
 
 ---
 
@@ -129,7 +130,7 @@ analise-de-dados-fesa-doenca-de-lyme/
 
 ### 1. Clonar o repositório e instalar dependências
 ```bash
-git clone https://github.com/Trevejo/analise-de-dados-fesa-doenca-de-lyme.git
+git clone git@github.com:Trevejo/analise-de-dados-fesa-doenca-de-lyme.git
 cd analise-de-dados-fesa-doenca-de-lyme
 pip install -r requirements.txt
 ```

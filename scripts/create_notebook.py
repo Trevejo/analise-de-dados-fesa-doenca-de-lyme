@@ -10,8 +10,9 @@ def create_notebook():
                 "source": [
                     "# Entrega 01: Relatório de Análise de Dados e Plano do Problema\n",
                     "## Projeto: Inteligência Artificial e Visão Computacional para Diagnóstico Precoce da Doença de Lyme\n",
-                    "**Instituição:** Centro Universitário FEI / FESA  \n",
-                    "**Disciplina:** Ciência e Análise de Dados  \n",
+                    "**Instituição:** FESA - Faculdade Engenheiro Salvador Arena  \n",
+                    "**Curso:** Engenharia de Computação  \n",
+                    "**Disciplina:** Análise de Dados (N1 - 2º Bimestre)  \n",
                     "**Dataset:** Lyme Disease Rashes (Full Stratified - Kaggle)  \n",
                     "**Autor:** Murilo Trevejo  \n",
                     "**Data:** Outubro de 2026\n",
@@ -237,7 +238,7 @@ def create_notebook():
                 "cell_type": "markdown",
                 "metadata": {},
                 "source": [
-                    "## 8. As 4 Perguntas-Chave do Projeto (Problema de Ciência de Dados)\n",
+                    "## 8. As 4 Perguntas-Chave do Projeto (Problema de Análise de Dados e Aprendizado de Máquina)\n",
                     "\n",
                     "### 1. Pergunta de Agrupamento (Clustering Não Supervisionado)\n",
                     "> *\"Existem subgrupos, padrões morfológicos latentes ou fenótipos visuais não rotulados entre as lesões de eritema de pacientes com Lyme que permitam categorizar diferentes perfis de gravidade ou tempo de evolução clínica?\"*\n",
@@ -276,7 +277,7 @@ def create_notebook():
     nb_path = os.path.join(nb_dir, "01_analise_exploratoria_lyme.ipynb")
     with open(nb_path, "w", encoding="utf-8") as f:
         json.dump(nb, f, indent=2, ensure_ascii=False)
-    print("Notebook created successfully:", nb_path)
+    print("Notebook updated successfully:", nb_path)
 
 if __name__ == "__main__":
     create_notebook()

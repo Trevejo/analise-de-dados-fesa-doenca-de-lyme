@@ -35,7 +35,7 @@ class NumberedCanvas(canvas.Canvas):
         # We do not draw headers/footers on page 1 (cover / front page)
         if self._pageNumber > 1:
             # Header
-            self.drawString(50, 800, "Centro Universitário FEI / FESA • Ciência e Análise de Dados")
+            self.drawString(50, 800, "FESA - Faculdade Engenheiro Salvador Arena • Engenharia de Computação • Análise de Dados")
             self.drawRightString(545, 800, "Entrega 01: Doença de Lyme (Eritema Migratório)")
             self.setStrokeColor(colors.HexColor("#CBD5E1"))
             self.setLineWidth(0.6)
@@ -190,54 +190,30 @@ def create_report():
         spaceAfter=8
     )
 
-    callout_style = ParagraphStyle(
-        'Callout',
-        parent=styles['Normal'],
-        fontName='Helvetica',
-        fontSize=8.8,
-        leading=12.5,
-        textColor=colors.HexColor("#1E3A8A")
-    )
-
     story = []
 
     # -------------------------------------------------------------------------
-    # HEADER / COVER BLOCK
+    # HEADER / TITLE BLOCK (Bloco vermelho removido a pedido do usuário)
     # -------------------------------------------------------------------------
-    badge_table = Table(
-        [[Paragraph("<font color='#DC2626'><b>PROJETO ACADÊMICO DE CIÊNCIA DE DADOS EM SAÚDE • N1 2º BIMESTRE</b></font>", meta_style)]],
-        colWidths=[505]
-    )
-    badge_table.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#FEE2E2")),
-        ('LEFTPADDING', (0,0), (-1,-1), 8),
-        ('RIGHTPADDING', (0,0), (-1,-1), 8),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('BOX', (0,0), (-1,-1), 0.5, colors.HexColor("#FCA5A5")),
-    ]))
-    story.append(badge_table)
-    story.append(Spacer(1, 10))
-
     story.append(Paragraph("Entrega 01: Relatório de Análise de Dados e Plano do Problema", title_style))
     story.append(Paragraph("Mapeamento Clínico, Curadoria do Dataset de Lesões Cutâneas e Formulação da Pipeline de Inteligência Artificial para Doença de Lyme", subtitle_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=secondary_color, spaceAfter=8))
 
     meta_data = [
         [
-            Paragraph("<b>Instituição:</b> Centro Universitário FEI / FESA", meta_style),
-            Paragraph("<b>Disciplina:</b> Ciência e Análise de Dados", meta_style)
+            Paragraph("<b>Instituição:</b> FESA - Faculdade Engenheiro Salvador Arena", meta_style),
+            Paragraph("<b>Curso:</b> Engenharia de Computação", meta_style)
         ],
         [
-            Paragraph("<b>Doença Selecionada:</b> Doença de Lyme (<i>Borrelia burgdorferi</i>)", meta_style),
+            Paragraph("<b>Disciplina:</b> Análise de Dados (N1 - 2º Bimestre)", meta_style),
             Paragraph("<b>Data da Entrega:</b> Outubro de 2026", meta_style)
         ],
         [
-            Paragraph("<b>Dataset:</b> Lyme Disease Rashes (Full Stratified - Kaggle)", meta_style),
-            Paragraph("<b>Amostras:</b> 5.059 imagens dermatológicas (RGB)", meta_style)
+            Paragraph("<b>Doença Selecionada:</b> Doença de Lyme (<i>Borrelia burgdorferi</i>)", meta_style),
+            Paragraph("<b>Dataset:</b> Lyme Disease Rashes (5.059 imagens RGB)", meta_style)
         ]
     ]
-    t_meta = Table(meta_data, colWidths=[250, 255])
+    t_meta = Table(meta_data, colWidths=[270, 235])
     t_meta.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
         ('TOPPADDING', (0,0), (-1,-1), 4),
@@ -255,7 +231,7 @@ def create_report():
     resumo_box = [
         [Paragraph("<b>SUMÁRIO EXECUTIVO</b>", ParagraphStyle('Bld', parent=meta_style, fontName='Helvetica-Bold', textColor=primary_color))],
         [Paragraph(
-            "Este documento técnico formaliza a <b>Entrega 01</b> do projeto semestral de Ciência de Dados Aplicada, focando na <b>Doença de Lyme</b>. "
+            "Este documento técnico formaliza a <b>Entrega 01</b> do projeto prático da disciplina de <b>Análise de Dados</b> do curso de <b>Engenharia de Computação</b> na <b>FESA - Faculdade Engenheiro Salvador Arena</b>, focando na <b>Doença de Lyme</b>. "
             "A Doença de Lyme é a infecção transmitida por vetor (carrapatos <i>Ixodes</i>) mais prevalente no hemisfério norte e de diagnóstico complexo. "
             "O principal biomarcador e sinal clínico inicial da infecção é a manifestação cutânea conhecida como <b>Eritema Migratório (Erythema Migrans - EM)</b>. "
             "Entretanto, os exames laboratoriais sorológicos convencionais (duas etapas: ELISA e Western Blot) apresentam baixíssima sensibilidade (&lt; 30-50%) nas primeiras "
@@ -307,10 +283,10 @@ def create_report():
     story.append(Paragraph("3. <b>Mimetismo Dermatológico e Diagnósticos Diferenciais:</b> O eritema migratório compartilha características morfológicas, bordas e tonalidades com inúmeras patologias cutâneas frequentes, incluindo <i>Tinea corporis</i> (micose anular), eritema anular centrífugo, celulite bacteriana por <i>Staphylococcus/Streptococcus</i>, picadas necróticas de aranha e reações a drogas.", bullet_style))
 
     story.append(Spacer(1, 6))
-    story.append(Paragraph("Justificativa e Relevância sob a Perspectiva de Ciência de Dados e IA", h2_style))
+    story.append(Paragraph("Justificativa e Relevância sob a Perspectiva de Análise de Dados e IA", h2_style))
     story.append(Paragraph(
         "A interseção entre a alta taxa de erro humano na fase aguda e o advento de redes neurais convolucionais (CNNs) e modelos de Visão Computacional "
-        "torna o diagnóstico por imagem da Doença de Lyme um dos problemas de maior impacto em Inteligência Artificial aplicada à Saúde. "
+        "torna a análise visual e classificação da Doença de Lyme um dos problemas de maior impacto em Inteligência Artificial aplicada à Saúde. "
         "Um sistema automatizado de triagem dermatológica é capaz de padronizar a detecção precoce no Ponto de Atendimento (<i>Point-of-Care</i>) e em plataformas de Telemedicina, "
         "reduzindo drasticamente o tempo até o início da antibioticoterapia de primeira linha, evitando o uso incorreto de antifúngicos ou corticoesteroides e impedindo a "
         "evolução debilitante para neuroborreliose e cardite.",
@@ -475,7 +451,7 @@ def create_report():
     story.append(Spacer(1, 6))
     story.append(Paragraph("Limitações Inerentes da Base de Dados Identificadas", h2_style))
     story.append(Paragraph(
-        "Como prática rigorosa de auditoria em Ciência de Dados em Saúde, documentam-se quatro limitações intrínsecas da base:",
+        "Como prática rigorosa de auditoria em Análise de Dados em Saúde, documentam-se quatro limitações intrínsecas da base:",
         body_style
     ))
     story.append(Paragraph("1. <b>Ausência de Prontuários Tabulares e Demografia:</b> O repositório não acompanha variáveis estruturadas como idade, sexo biológico, comorbidades, tempo exato desde a picada do carrapato ou resposta imune confirmatória (Western Blot).", bullet_style))
@@ -484,13 +460,13 @@ def create_report():
     story.append(Paragraph("4. <b>Variação Incontrolada de Ângulo e Flash:</b> A iluminação varia de fotos tiradas sob flash fotográfico intenso até ambientes sombreados, demandando técnicas robustas de color augmentation e normalização de luminância.", bullet_style))
 
     # -------------------------------------------------------------------------
-    # SEÇÃO 4: AS 4 PERGUNTAS-CHAVE DO PROBLEMA DE CIÊNCIA DE DADOS
+    # SEÇÃO 4: AS 4 PERGUNTAS-CHAVE DO PROBLEMA
     # -------------------------------------------------------------------------
     story.append(Spacer(1, 8))
     story.append(Paragraph("4. Formulação Explícita das Quatro Perguntas-Chave do Projeto", h1_style))
     story.append(Paragraph(
-        "Seguindo estritamente as diretrizes da comanda de avaliação acadêmica, a pipeline analítica do projeto é estruturada "
-        "ao redor de quatro perguntas-chave multidisciplinares de Ciência de Dados e Aprendizado de Máquina:",
+        "Seguindo estritamente as diretrizes da comanda de avaliação acadêmica, a pipeline de modelagem do projeto é estruturada "
+        "ao redor de quatro perguntas-chave multidisciplinares de Análise de Dados e Aprendizado de Máquina:",
         body_style
     ))
 
