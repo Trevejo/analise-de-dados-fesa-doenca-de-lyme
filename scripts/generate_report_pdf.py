@@ -206,7 +206,7 @@ def create_report():
         ],
         [
             Paragraph("<b>Disciplina:</b> Análise de Dados (N1 - 2º Bimestre)", meta_style),
-            Paragraph("<b>Data da Entrega:</b> Outubro de 2026", meta_style)
+            Paragraph("<b>Data da Entrega:</b> 19/10/2026", meta_style)
         ],
         [
             Paragraph("<b>Doença Selecionada:</b> Doença de Lyme (<i>Borrelia burgdorferi</i>)", meta_style),
