@@ -226,37 +226,6 @@ def create_report():
     story.append(Spacer(1, 12))
 
     # -------------------------------------------------------------------------
-    # RESUMO EXECUTIVO
-    # -------------------------------------------------------------------------
-    resumo_box = [
-        [Paragraph("<b>SUMÁRIO EXECUTIVO</b>", ParagraphStyle('Bld', parent=meta_style, fontName='Helvetica-Bold', textColor=primary_color))],
-        [Paragraph(
-            "Este documento técnico formaliza a <b>Entrega 01</b> do projeto prático da disciplina de <b>Análise de Dados</b> do curso de <b>Engenharia de Computação</b> na <b>FESA - Faculdade Engenheiro Salvador Arena</b>, focando na <b>Doença de Lyme</b>. "
-            "A Doença de Lyme é a infecção transmitida por vetor (carrapatos <i>Ixodes</i>) mais prevalente no hemisfério norte e de diagnóstico complexo. "
-            "O principal biomarcador e sinal clínico inicial da infecção é a manifestação cutânea conhecida como <b>Eritema Migratório (Erythema Migrans - EM)</b>. "
-            "Entretanto, os exames laboratoriais sorológicos convencionais (duas etapas: ELISA e Western Blot) apresentam baixíssima sensibilidade (&lt; 30-50%) nas primeiras "
-            "semanas de infecção ativa. Por esse motivo, o diagnóstico na fase aguda depende fundamentalmente da avaliação visual da lesão cutânea, "
-            "frequentemente confundida com outros quadros dermatológicos (como tínea corporal, celulite bacteriana, picadas de artrópodes e eritema multiforme). "
-            "Neste trabalho, realizamos a curadoria de uma base de dados real do repositório <b>Kaggle (Lyme Disease Rashes - Full Stratified)</b> contendo "
-            "<b>5.059 imagens dermatológicas de alta resolução</b>, estruturamos seu dicionário completo de atributos clínico-computacionais, formulamos as quatro "
-            "perguntas-chave analíticas do problema (Agrupamento, Classificação Supervisionada, Modelagem Preditiva/Temporal e Sistema de Suporte à Decisão Clínica - CDSS) "
-            "e executamos uma rigorosa Análise Exploratória Preliminar (EDA) diagnosticando ausência de dados, desbalanceamento de classes, ruídos visuais e outliers.",
-            body_style
-        )]
-    ]
-    t_resumo = Table(resumo_box, colWidths=[505])
-    t_resumo.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#EFF6FF")),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#93C5FD")),
-        ('LEFTPADDING', (0,0), (-1,-1), 10),
-        ('RIGHTPADDING', (0,0), (-1,-1), 10),
-        ('TOPPADDING', (0,0), (-1,-1), 6),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
-    ]))
-    story.append(t_resumo)
-    story.append(Spacer(1, 14))
-
-    # -------------------------------------------------------------------------
     # SEÇÃO 1: CONTEXTO CLÍNICO E MAPEAMENTO DO DOMÍNIO
     # -------------------------------------------------------------------------
     story.append(Paragraph("1. Escolha da Doença e Mapeamento do Domínio Clínico", h1_style))
