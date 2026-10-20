@@ -29,22 +29,23 @@ class NumberedCanvas(canvas.Canvas):
 
     def draw_page_decorations(self, page_count):
         self.saveState()
-        
-        # Header em cada página: apenas "Faculdade Engenheiro Salvador Arena"
-        self.setFont("Helvetica-Bold", 8.5)
-        self.setFillColor(colors.HexColor("#475569"))
-        self.drawString(45, 812, "Faculdade Engenheiro Salvador Arena")
-        self.setStrokeColor(colors.HexColor("#CBD5E1"))
-        self.setLineWidth(0.6)
-        self.line(45, 804, 550, 804)
-
-        # Footer
         self.setFont("Helvetica", 8)
         self.setFillColor(colors.HexColor("#64748B"))
-        self.line(45, 46, 550, 46)
-        self.drawString(45, 33, "Engenharia de Computação • Análise de Dados")
-        page_text = f"Página {self._pageNumber} de {page_count}"
-        self.drawRightString(550, 33, page_text)
+        
+        # Cabeçalho e rodapé nas páginas seguintes (página > 1)
+        if self._pageNumber > 1:
+            # Header: nome da faculdade à esquerda, identificação da entrega à direita
+            self.drawString(45, 810, "Faculdade Engenheiro Salvador Arena")
+            self.drawRightString(550, 810, "Entrega 01: Doença de Lyme (Eritema Migratório)")
+            self.setStrokeColor(colors.HexColor("#CBD5E1"))
+            self.setLineWidth(0.6)
+            self.line(45, 804, 550, 804)
+
+            # Footer
+            self.line(45, 46, 550, 46)
+            self.drawString(45, 33, "Engenharia de Computação • Análise de Dados")
+            page_text = f"Página {self._pageNumber} de {page_count}"
+            self.drawRightString(550, 33, page_text)
             
         self.restoreState()
 
