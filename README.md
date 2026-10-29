@@ -3,12 +3,13 @@
 **Instituição:** FESA - Faculdade Engenheiro Salvador Arena  
 **Curso:** Engenharia de Computação  
 **Disciplina:** Análise de Dados  
-**Avaliação:** N1 - 2º Bimestre • **Entrega 01: Relatório de Análise de Dados e Plano do Problema**  
+**Avaliação:** N1 - 2º Bimestre • **Entrega 01: Relatório de Análise de Dados e Plano do Problema** • **Entrega 02: Implementação Analítica, CDSS e Ética (Google Colab)**  
 **Autores (Dupla):**  
 - Fábio Gomes Celestino — RA: 081220016  
 - Murilo Trevejo Santos — RA: 081220025  
-**Data de Entrega:** 19/10/2026  
-**Relatório Técnico Oficial:** [`reports/Relatorio_Entrega_01_Doenca_de_Lyme.pdf`](reports/Relatorio_Entrega_01_Doenca_de_Lyme.pdf)
+**Data de Entrega:** 19/10/2026 (Entrega 01)  
+**Relatório Técnico Oficial (Entrega 01):** [`reports/Relatorio_Entrega_01_Doenca_de_Lyme.pdf`](reports/Relatorio_Entrega_01_Doenca_de_Lyme.pdf)  
+**Notebook da Entrega 02:** [`notebooks/02_pipeline_analitica_cdss_etica_lyme.ipynb`](notebooks/02_pipeline_analitica_cdss_etica_lyme.ipynb) — [![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Trevejo/analise-de-dados-fesa-doenca-de-lyme/blob/main/notebooks/02_pipeline_analitica_cdss_etica_lyme.ipynb)
 
 ---
 
@@ -98,6 +99,27 @@ A tabela completa de atributos estruturados extraídos das 5.059 imagens encontr
 
 ---
 
+## 🧪 6. Entrega 02 — Pipeline Analítica, Suporte à Decisão Clínica (CDSS) e Ética
+
+Notebook executável no Google Colab que responde às perguntas da Entrega 01 a partir das imagens. Todas as saídas estão
+salvas no `.ipynb`; os atributos extraídos ficam em `data/cache/` para que a reexecução leve ~2 minutos.
+
+| Etapa | O que foi feito | Principais resultados |
+| :--- | :--- | :--- |
+| **Biomarcadores visuais** | 18 atributos interpretáveis por foto (vermelhidão CIELAB, contraste eritematoso, perfil radial centro→borda, textura GLCM, bordas, tom de pele ITA) + *embeddings* ConvNeXt-Tiny (768-d) | Efeitos univariados pequenos (\|δ de Cliff\| ≤ 0,17); vermelhidão média não difere entre Lyme e controles |
+| **Qualidade dos dados** | Deduplicação por similaridade semântica + de pixels; auditoria de rótulos | 908 fotos (17,9%) em grupos de duplicatas, 154 grupos cruzando treino/teste e **248 fotos com rótulos contraditórios** → base final de 4.451 fotos (705 Lyme, razão 5,3:1) |
+| **Classificação (P2)** | Biomarcadores + Gradient Boosting, *embeddings* + Regressão Logística, fusão; CV 5-fold + teste independente | Modelo final (embeddings): **AUC-ROC 0,785**, **AUC-PR 0,487**; limiar de triagem: sensibilidade 93,7%, VPN 96,5% |
+| **Agrupamento (P1)** | PCA + K-Means + t-SNE nas lesões de Lyme | Silhueta 0,099 (k=2): clusters fracos, ligados ao enquadramento da foto e não a estágios clínicos |
+| **Temporal (P3)** | Análise de viabilidade | Não respondível: a fonte não tem tempo nem escala física; protocolo de coleta proposto |
+| **CDSS (P4)** | Limiares de triagem/confirmação, calibração de Platt, VPP por prevalência, CAM | Três zonas de risco; Brier 0,173 → 0,113 após calibração; VPP < 1% na prevalência brasileira |
+| **Ética** | Auditoria por tom de pele, impacto de FP/FN, XAI, LGPD | Sensibilidade cai para 82,9% em fotos de pele escura/sombreada (×92–93% nos demais grupos) |
+
+**Para executar:** abra o notebook pelo botão "Abrir no Colab" (o próprio notebook clona este repositório) ou, localmente,
+`pip install -r requirements.txt` e execute `notebooks/02_pipeline_analitica_cdss_etica_lyme.ipynb`. O notebook é gerado
+por `scripts/create_notebook_entrega02.py` (código) + `scripts/notebook_entrega02_textos.py` (textos de interpretação).
+
+---
+
 ## 📁 Estrutura do Repositório
 
 ```text
@@ -105,14 +127,18 @@ analise-de-dados-fesa-doenca-de-lyme/
 ├── data/
 │   ├── DataSplit/                  # Dataset particionado (train/val/test, Positive/Negative)
 │   ├── image_folder_balanced/      # Subconjunto balanceado para mitigar viés a priori
-│   └── metadata_lyme_rashes.csv    # Tabela estruturada com 20 atributos de 5.059 imagens
+│   ├── metadata_lyme_rashes.csv    # Tabela estruturada com 20 atributos de 5.059 imagens
+│   └── cache/                      # Biomarcadores visuais e embeddings ConvNeXt-Tiny (Entrega 02)
 ├── notebooks/
-│   └── 01_analise_exploratoria_lyme.ipynb  # Notebook interativo com a EDA completa
+│   ├── 01_analise_exploratoria_lyme.ipynb  # Notebook interativo com a EDA completa
+│   └── 02_pipeline_analitica_cdss_etica_lyme.ipynb  # ENTREGA 02: pipeline, CDSS e ética (Colab)
 ├── scripts/
 │   ├── extract_metadata.py         # Script extrator de atributos computacionais e espectrais
 │   ├── run_eda.py                  # Script gerador dos gráficos estatísticos em alta resolução
 │   ├── generate_report_pdf.py      # Gerador ReportLab do documento técnico em PDF
-│   └── create_notebook.py          # Gerador automatizado do Jupyter Notebook
+│   ├── create_notebook.py          # Gerador automatizado do Jupyter Notebook
+│   ├── create_notebook_entrega02.py  # Gerador do notebook da Entrega 02
+│   └── notebook_entrega02_textos.py  # Textos de contextualização e interpretação da Entrega 02
 ├── reports/
 │   ├── Relatorio_Entrega_01_Doenca_de_Lyme.pdf  # DOCUMENTO TÉCNICO OFICIAL DE ENTREGA
 │   └── figures/                    # Gráficos em 300 DPI gerados na EDA
@@ -121,7 +147,9 @@ analise-de-dados-fesa-doenca-de-lyme/
 │       ├── 03_dimensions_and_aspect_ratio.png
 │       ├── 04_color_and_erythema.png
 │       ├── 05_brightness_contrast_outliers.png
-│       └── 06_sample_montage.png
+│       ├── 06_sample_montage.png
+│       └── entrega02/              # Gráficos da Entrega 02 exportados do notebook
+├── docs/comandas/                  # Enunciados das Entregas 01 e 02
 ├── requirements.txt                # Dependências do projeto
 └── README.md                       # Documentação completa
 ```
